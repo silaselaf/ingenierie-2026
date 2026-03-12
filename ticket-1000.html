@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket 1000 FCFA — Journée de l'Ingénierie 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #f5c842;
+    --accent2: #c8860a;
+    --glow: rgba(245,200,66,.35);
+    --bg: #07101e;
+    --card: rgba(245,200,66,.07);
+    --border: rgba(245,200,66,.35);
+    --white: #f0f6ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0 0 50px;
+    position: relative; overflow-x: hidden;
+  }
+  #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star { position: absolute; border-radius: 50%; background: white; opacity: 0;
+    animation: twinkle var(--dur) var(--delay) infinite alternate; }
+  @keyframes twinkle { 0%{opacity:0} 100%{opacity:var(--op)} }
+  body::before {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background: linear-gradient(rgba(245,200,66,.025) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(245,200,66,.025) 1px,transparent 1px);
+    background-size: 44px 44px;
+  }
+  .page { position:relative; z-index:1; width:100%; max-width:460px; padding:0 18px; }
+
+  /* Top bar */
+  .topbar { display:flex; justify-content:space-between; align-items:center; padding:22px 0 18px;
+    opacity:0; animation:fadeUp .5s .1s forwards; }
+  .pill { font-family:'Orbitron',sans-serif; font-size:.58rem; letter-spacing:2px;
+    border:1px solid var(--border); border-radius:20px; padding:5px 12px; color:var(--accent);
+    background:rgba(245,200,66,.06); }
+  .pill.green { color:#4caf50; border-color:rgba(76,175,80,.3); }
+
+  /* Valid */
+  .valid-wrap { text-align:center; padding:30px 0 22px;
+    opacity:0; animation:scaleIn .6s .3s cubic-bezier(.34,1.56,.64,1) forwards; }
+  @keyframes scaleIn { from{opacity:0;transform:scale(.4)} to{opacity:1;transform:scale(1)} }
+  .valid-ring {
+    width:110px; height:110px; border-radius:50%;
+    border:3px solid var(--accent); margin:0 auto 16px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 0 40px var(--glow), inset 0 0 25px var(--glow);
+    animation: glow-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes glow-pulse {
+    0%,100%{box-shadow:0 0 30px var(--glow),inset 0 0 15px var(--glow)}
+    50%{box-shadow:0 0 60px var(--glow),inset 0 0 35px var(--glow)}
+  }
+  .valid-icon { font-size:3.2rem; line-height:1; }
+  .valid-title { font-family:'Orbitron',sans-serif; font-size:1.3rem; font-weight:900;
+    color:var(--accent); letter-spacing:2px; filter:drop-shadow(0 0 10px var(--glow)); }
+  .valid-sub { font-size:.78rem; color:rgba(240,246,255,.45); margin-top:5px; letter-spacing:1px; }
+
+  /* Ticket card */
+  .ticket { background:var(--card); border:1.5px solid var(--border); border-radius:20px;
+    overflow:hidden; margin-bottom:14px; backdrop-filter:blur(10px);
+    opacity:0; animation:fadeUp .5s .5s forwards; }
+  .ticket-top {
+    background:linear-gradient(135deg, #5a3a00, #c8860a, #f5c842);
+    padding:14px 20px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .ticket-top-left { display:flex; flex-direction:column; }
+  .ticket-label { font-family:'Orbitron',sans-serif; font-size:.55rem; letter-spacing:2px;
+    color:#0d1f3c; font-weight:700; text-transform:uppercase; }
+  .ticket-name { font-family:'Orbitron',sans-serif; font-size:.85rem; font-weight:900; color:#0d1f3c; margin-top:2px; }
+  .ticket-price-big { font-family:'Orbitron',sans-serif; font-size:1.4rem; font-weight:900;
+    color:#0d1f3c; text-shadow:0 1px 3px rgba(0,0,0,.2); }
+  .ticket-price-big small { font-size:.6rem; font-weight:400; }
+
+  .ticket-body { padding:18px 20px; }
+  .event-title { font-family:'Orbitron',sans-serif; font-size:.95rem; font-weight:900;
+    line-height:1.2; margin-bottom:14px;
+    background:linear-gradient(135deg,var(--white) 40%,var(--accent));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .divider { height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); margin:12px 0; }
+  .info-row { display:flex; align-items:flex-start; gap:10px; margin-bottom:9px; }
+  .info-icon { font-size:1rem; width:24px; text-align:center; flex-shrink:0; }
+  .info-text { font-size:.82rem; line-height:1.3; color:rgba(240,246,255,.82); }
+  .info-text strong { color:var(--accent); font-size:.68rem; letter-spacing:1px;
+    text-transform:uppercase; display:block; margin-bottom:1px; }
+
+  /* Sections */
+  .section { background:var(--card); border:1px solid var(--border); border-radius:18px;
+    padding:18px; margin-bottom:14px; backdrop-filter:blur(8px);
+    opacity:0; animation:fadeUp .5s var(--d,.7s) forwards; }
+  .sec-title { font-family:'Orbitron',sans-serif; font-size:.6rem; letter-spacing:3px;
+    text-transform:uppercase; color:var(--accent); margin-bottom:14px;
+    display:flex; align-items:center; gap:8px; }
+  .sec-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--accent2),transparent); }
+
+  /* Welcome */
+  .welcome { text-align:center; }
+  .welcome-emoji { font-size:2rem; display:block; margin-bottom:8px; }
+  .welcome-text { font-size:.86rem; line-height:1.6; color:rgba(240,246,255,.75); }
+  .welcome-text strong { color:var(--accent); }
+
+  /* Programme */
+  .prog-item { display:flex; gap:10px; align-items:flex-start; margin-bottom:8px;
+    background:rgba(255,255,255,.03); border-radius:10px; padding:9px 12px;
+    border-left:2px solid var(--accent2); font-size:.82rem; line-height:1.4; }
+  .prog-item:last-child { margin-bottom:0; }
+
+  /* Dress */
+  .dress-pill { display:flex; align-items:center; justify-content:center; gap:8px;
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12);
+    border-radius:30px; padding:10px 20px; font-size:.8rem;
+    margin:0 auto 14px; width:fit-content;
+    opacity:0; animation:fadeUp .5s 1.1s forwards; }
+  .dress-pill strong { color:var(--accent); }
+
+  /* Notice */
+  .notice { background:rgba(245,200,66,.08); border:1px solid rgba(245,200,66,.2);
+    border-radius:14px; padding:14px 16px; text-align:center;
+    font-size:.78rem; color:rgba(240,246,255,.55); line-height:1.5;
+    opacity:0; animation:fadeUp .5s 1.2s forwards; }
+
+  .foot { text-align:center; font-size:.65rem; color:rgba(240,246,255,.2);
+    letter-spacing:1px; margin-top:16px;
+    opacity:0; animation:fadeIn .8s 1.3s forwards; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="page">
+
+  <div class="topbar">
+    <div class="pill">⚙️ IΣP</div>
+    <div class="pill">👑 PREMIUM · 1000 FCFA</div>
+    <div class="pill green">🌍 ESIAC</div>
+  </div>
+
+  <!-- Validation -->
+  <div class="valid-wrap">
+    <div class="valid-ring"><span class="valid-icon">✅</span></div>
+    <div class="valid-title">TICKET VALIDE</div>
+    <div class="valid-sub">Ticket d'Premium — 1000 FCFA</div>
+  </div>
+
+  <!-- Ticket Card -->
+  <div class="ticket">
+    <div class="ticket-top">
+      <div class="ticket-top-left">
+        <span class="ticket-label">👑 Ticket Premium</span>
+        <span class="ticket-name">Journée de l'Ingénierie 2026</span>
+      </div>
+      <div class="ticket-price-big">1000<small>FCFA</small></div>
+    </div>
+    <div class="ticket-body">
+      <div class="event-title">Journée de<br>l'Ingénierie 2026</div>
+      <div class="divider"></div>
+      <div class="info-row">
+        <span class="info-icon">📅</span>
+        <div class="info-text"><strong>Date</strong>Samedi 21 Mars 2026</div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">📍</span>
+        <div class="info-text"><strong>Lieu</strong>ESIAC – Campus de Logbaba</div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">🕐</span>
+        <div class="info-text"><strong>Heure d'ouverture</strong>Dès 13h00</div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">👔</span>
+        <div class="info-text"><strong>Dress Code</strong>Tenue Responsable</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Welcome -->
+  <div class="section" style="--d:.65s">
+    <div class="sec-title">👋 Bienvenue</div>
+    <div class="welcome">
+      <span class="welcome-emoji">🎉</span>
+      <p class="welcome-text">
+        ESIAC t'embarque dans une journée <strong>mémorable</strong> !<br><br>
+        Rencontre des <strong>ingénieurs & entrepreneurs</strong> de renom, profite des <strong>humoristes invités</strong>
+        et savoure le <strong>délicieux repas de clôture</strong>. 🍟🧇🍜
+      </p>
+    </div>
+  </div>
+
+  <!-- Programme -->
+  <div class="section" style="--d:.8s">
+    <div class="sec-title">⚡ Ordre du Jour</div>
+    <div class="prog-item">🎤 <span><strong>Conférence</strong> — Vision ingénierie africaine</span></div>
+    <div class="prog-item">🏆 <span><strong>Interventions</strong> d'Ingénieurs & Entrepreneurs reconnus</span></div>
+    <div class="prog-item">🎙️ <span><strong>Panel d'experts</strong> — Débats & perspectives</span></div>
+    <div class="prog-item">💬 <span><strong>Témoignages</strong> des leaders du secteur</span></div>
+    <div class="prog-item">😄 <span><strong>Intermèdes</strong> avec nos Humoristes invités</span></div>
+    <div class="prog-item">🤝 <span><strong>Networking</strong> — Construis ton réseau</span></div>
+    <div class="prog-item">🍽️ <span><strong>Repas de clôture</strong> + Boissons rafraîchissantes</span></div>
+  </div>
+
+  <div class="dress-pill">👔👗 Dress Code : <strong>Tenue Responsable</strong></div>
+
+  <div class="notice">
+    🚨 Ce ticket est personnel et non remboursable.<br>
+    Présente-le à l'entrée le <strong>21 Mars 2026 à 13h00</strong>.
+  </div>
+
+  <div class="foot">ESIAC — Campus de Logbaba · Journée de l'Ingénierie 2026 · Première Édition</div>
+</div>
+<script>
+  const sc = document.getElementById('stars');
+  for (let i = 0; i < 90; i++) {
+    const s = document.createElement('div'); s.className = 'star';
+    const sz = Math.random()*2+.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${(Math.random()*4+2).toFixed(1)}s;--delay:${(Math.random()*6).toFixed(1)}s;--op:${(Math.random()*.5+.1).toFixed(2)}`;
+    sc.appendChild(s);
+  }
+</script>
+</body>
+</html>
